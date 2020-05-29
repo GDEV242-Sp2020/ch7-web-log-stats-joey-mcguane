@@ -9,6 +9,7 @@ public class LogAnalyzer
     // Where to calculate the hourly access counts.
     private int[] hourCounts;
     // Use a LogfileReader to access the data.
+    private int[] dayCounts;
     private LogfileReader reader;
 
     /**
@@ -21,6 +22,7 @@ public class LogAnalyzer
         // Create the array object to hold the hourly
         // access counts.
         hourCounts = new int[24];
+        dayCounts = new int [28];
         // Create the reader to obtain the data.
         reader = new LogfileReader(fileName);
     }
@@ -38,6 +40,19 @@ public class LogAnalyzer
     }
 
     /**
+     * Used to analyze day counts.
+     */
+    
+    public void analyzeDailyData()
+    {
+        while(reader.hasNext()){
+            LogEntry entry = reader.next();
+            int day = entry.getDay();
+            dayCounts[day]++;
+        }
+    }
+    
+    /**
      * For 7.14, allows for all the accesses for each hour 
      * to be added to a total, but only if the value of data is higher than
      * zero.
@@ -52,6 +67,10 @@ public class LogAnalyzer
         }
         return total;
     }
+    
+    /**
+     * Busiest hour code, registers the most counts on an hour.
+     */
     
     public int busiestHour()
     {
@@ -72,6 +91,10 @@ public class LogAnalyzer
         return busyHour;
     }
     
+    /**
+     * Busiest 2 hour code, registers which two-hour period has the most
+     * checks. Then when it is done, it counts the hour after that period.
+     */
         
     public int busiest2Hour()
     {
@@ -92,7 +115,12 @@ public class LogAnalyzer
         return busy2Hour;
     }
     
-    public int quiestestHour()
+    /**
+     * Quietest hour code, analyzes all hours present, checks which one is the
+     * lowest count, then puts it up.
+     */
+    
+    public int quietestHour()
     {
         int numAccessQuiet = numberOfAccesses();
         int quietHour = 0;
@@ -112,6 +140,52 @@ public class LogAnalyzer
     }
     
     /**
+     * Busiest day code, analyzes the number of times a day comes up, then
+     * picks out the day with the highest about of counts.
+     */
+    
+    public int busiestDay()
+    {
+        analyzeDailyData();
+        
+        int busyDay = 0;
+        int numAccessBusyDay = 0;
+        
+        for(int i = 0; i < dayCounts.length; i++) {
+            if(dayCounts[i] > numAccessBusyDay){
+                numAccessBusyDay = dayCounts[i];
+                busyDay = i;
+            }
+        }
+        return busyDay;
+    }
+    
+    /**
+     * Unable to complete quietest day, couldn't figure out the code.
+     */
+/*    
+    public int quietestDay()
+    {
+        analyzeDailyData();
+        
+        int quietDay = 1;
+        int numAccessQuietDay = numberOfAccesses();
+        int i = 0;
+        
+        while ( i < dayCounts.length - 1) {
+            if(dayCounts[i] < numAccessQuietDay){
+                quietDay = i;
+                dayCounts[i] = numAccessQuietDay;
+                i++;
+            }
+            else {
+                i++;
+            }
+        }
+        return quietDay;
+    }
+    */
+    /**
      * Print the hourly counts.
      * These should have been set with a prior
      * call to analyzeHourlyData.
@@ -124,6 +198,18 @@ public class LogAnalyzer
         }
     }
     
+    /**
+     * Prints the daily counts from analyzeDailyData
+     */
+    
+    public void printDailyCounts()
+    {
+        System.out.println("Day: Count");
+        for(int day = 1; day < dayCounts.length; day++) {
+            System.out.println(day + ": " + dayCounts[day]);
+        }
+    }
+   
     /**
      * Print the lines of data read by the LogfileReader
      */
