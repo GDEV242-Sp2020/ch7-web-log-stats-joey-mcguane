@@ -177,7 +177,8 @@ public class LogAnalyzer
     
     /**
      * Quietest day code, analyzes the least number of times a day comes up,
-     * it picks out that day.
+     * it picks out that day. That is, if a day comes up, it has to come
+     * up once officially.
      */
     
     public int quietestDay()
@@ -220,6 +221,33 @@ public class LogAnalyzer
             }
         }
         return busyMonth;
+    }
+    
+    /**
+     * Quietest month code, analyzes the least number of times a month comes up,
+     * it picks out that month. That is, if a month comes up, it has to come
+     * up once officially.
+     */
+    
+    public int quietestMonth()
+    {
+        analyzeMonthlyData();
+        
+        int quietMonth = 0;
+        int numAccessQuietMonth = numberOfAccesses();
+        int i = 0;
+        
+        while ( i < monthCounts.length ) {
+            if(monthCounts[i] > numAccessQuietMonth){
+                dayCounts[i] = numAccessQuietMonth;
+                quietMonth = i;
+                i++;
+            }
+            else {
+                i++;
+            }
+        }
+        return quietMonth;
     }
     
     /**
