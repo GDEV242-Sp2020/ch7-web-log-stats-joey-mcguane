@@ -72,6 +72,26 @@ public class LogAnalyzer
         return busyHour;
     }
     
+        
+    public int busiest2Hour()
+    {
+        int numAccess2Busy = 0;
+        int busy2Hour = 0;
+        int i = 0;
+        
+        while (i < hourCounts.length - 1){
+            if (numAccess2Busy< hourCounts[i] + hourCounts[i+1]){
+                busy2Hour = i;
+                numAccess2Busy = hourCounts[i] + hourCounts[i +1];
+                i++;
+            }
+            else {
+                i++;
+            }
+        }
+        return busy2Hour;
+    }
+    
     public int quiestestHour()
     {
         int numAccessQuiet = numberOfAccesses();
