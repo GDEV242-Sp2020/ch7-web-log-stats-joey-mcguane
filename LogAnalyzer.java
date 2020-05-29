@@ -38,6 +38,22 @@ public class LogAnalyzer
     }
 
     /**
+     * For 7.14, allows for all the accesses for each hour 
+     * to be added to a total, but only if the value of data is higher than
+     * zero.
+     */
+    
+    public int numberOfAccesses()
+    {
+        int total = 0;
+        
+        for (int aC = 0; aC < hourCounts.length; aC++){
+            total += hourCounts[aC];
+        }
+        return total;
+    }
+    
+    /**
      * Print the hourly counts.
      * These should have been set with a prior
      * call to analyzeHourlyData.
