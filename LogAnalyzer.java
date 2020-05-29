@@ -1,8 +1,10 @@
 /**
- * Read web server data and analyse hourly access patterns.
+ * Read web server data and analyse hourly, daily, and monthly access patterns.
+ * Also able to use data to determine the busiest and quietest hours, days,
+ * or months.
  * 
- * @author David J. Barnes and Michael Kölling.
- * @version    2016.02.29
+ * @author Joey McGuane
+ * @version    2020.05.29
  */
 public class LogAnalyzer
 {
