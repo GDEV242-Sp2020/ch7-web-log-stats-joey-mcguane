@@ -53,6 +53,44 @@ public class LogAnalyzer
         return total;
     }
     
+    public int busiestHour()
+    {
+        int numberAccesses = 0;
+        int busyHour = 0;
+        int i = 0;
+        
+         while (i < hourCounts.length) {
+             if (numberAccesses < hourCounts[i]){
+             busyHour = i;
+             numberAccesses = hourCounts[i];
+             i ++;
+            }
+            else {
+                i++;
+            }
+        }
+        return busyHour;
+    }
+    
+    public int quiestestHour()
+    {
+        int numAccessQuiet = numberOfAccesses();
+        int quietHour = 0;
+        int i = 0;
+        
+        while (i < hourCounts.length - 1) {
+            if (numAccessQuiet > hourCounts[i]){
+                quietHour = i;
+                numAccessQuiet = hourCounts[i];
+                i++;
+            }
+            else{
+                i++;
+            }
+        }
+        return quietHour;
+    }
+    
     /**
      * Print the hourly counts.
      * These should have been set with a prior
