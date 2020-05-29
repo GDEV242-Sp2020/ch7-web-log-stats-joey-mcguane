@@ -10,6 +10,7 @@ public class LogAnalyzer
     private int[] hourCounts;
     // Use a LogfileReader to access the data.
     private int[] dayCounts;
+    private int[] monthCounts;
     private LogfileReader reader;
 
     /**
@@ -22,7 +23,8 @@ public class LogAnalyzer
         // Create the array object to hold the hourly
         // access counts.
         hourCounts = new int[24];
-        dayCounts = new int [28];
+        dayCounts = new int [29];
+        monthCounts = new int [13];
         // Create the reader to obtain the data.
         reader = new LogfileReader(fileName);
     }
@@ -49,6 +51,19 @@ public class LogAnalyzer
             LogEntry entry = reader.next();
             int day = entry.getDay();
             dayCounts[day]++;
+        }
+    }
+    
+    /**
+     * Used to analyze month counts.
+     */
+    
+    public void analyzeMonthlyData()
+    {
+        while(reader.hasNext()){
+            LogEntry entry = reader.next();
+            int month = entry.getMonth();
+            monthCounts[month]++;
         }
     }
     
@@ -159,32 +174,28 @@ public class LogAnalyzer
         }
         return busyDay;
     }
-    
+   
     /**
-     * Unable to complete quietest day, couldn't figure out the code.
+     * Busiest month code, analyzes the number of times a month comes up, then
+     * picks out the month with the highest about of counts.
      */
-/*    
-    public int quietestDay()
+    
+    public int busiestMonth()
     {
-        analyzeDailyData();
+        analyzeMonthlyData();
         
-        int quietDay = 1;
-        int numAccessQuietDay = numberOfAccesses();
-        int i = 0;
+        int busyMonth = 0;
+        int numAccessBusyMonth = 0;
         
-        while ( i < dayCounts.length - 1) {
-            if(dayCounts[i] < numAccessQuietDay){
-                quietDay = i;
-                dayCounts[i] = numAccessQuietDay;
-                i++;
-            }
-            else {
-                i++;
+        for (int i = 0; i < monthCounts.length; i++){
+            if (monthCounts[i] > numAccessBusyMonth){
+                numAccessBusyMonth = monthCounts[i];
+                busyMonth = i;
             }
         }
-        return quietDay;
+        return busyMonth;
     }
-    */
+    
     /**
      * Print the hourly counts.
      * These should have been set with a prior
@@ -210,6 +221,18 @@ public class LogAnalyzer
         }
     }
    
+    /**
+     * Prints monthly counts from analyzeMonthlyData
+     */
+    
+    public void printMontlyCounts()
+    {
+        System.out.println("Month: Count");
+        for(int month = 1; month < monthCounts.length; month++){
+            System.out.println(month + ": " + monthCounts[month]);
+        }
+    }
+    
     /**
      * Print the lines of data read by the LogfileReader
      */
